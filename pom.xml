@@ -212,6 +212,15 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+<container>
+    <configuration>
+        <!-- Other configuration properties -->
+        <property name="cargo.remote.url" value="http://remote-container-url"/>
+        <property name="cargo.remote.username" value="your-username"/>
+        <property name="cargo.remote.password" value="your-password"/>
+        <!-- Other configuration properties -->
+    </configuration>
+</container>
 
   <scm>
     <connection>scm:git:git@github.com:jleetutorial/maven-project.git</connection>
