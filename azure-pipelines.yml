@@ -1,61 +1,15 @@
 trigger:
-- none  # Assuming this is a manual release trigger
-
-pr:
-- none
+  - master
+  - feature/*  
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
-variables:
-  vm_user: 'adminuser'
-  vm_password: 'Password1234!'
-  vm_host: '<your-vm-ip-address>'  # Replace with the actual IP address of your VM
-  artifact_path: '$(System.ArtifactsDirectory)/your-artifact-name.war'  # Replace with the actual artifact name
+steps:
+  - script: echo Hello, world!
+    displayName: 'Run a one-line script'
 
-stages:
-- stage: Deploy
-  jobs:
-  - deployment: DeployToTomcat
-    displayName: 'Deploy to Tomcat'
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment: '<your-environment-name>'  # Replace with the name of your environment
-
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-
-          - task: UseDotNet@2
-            displayName: 'Use .NET Core SDK'
-            inputs:
-              packageType: 'sdk'
-              version: '3.x'
-              installationPath: $(Agent.ToolsDirectory)/dotnet
-
-          - task: DownloadBuildArtifacts@0
-            displayName: 'Download Artifact'
-            inputs:
-              buildType: 'current'
-              downloadType: 'single'
-              artifactName: 'drop'
-              downloadPath: '$(System.ArtifactsDirectory)'
-
-          - task: CopyFiles@2
-            displayName: 'Copy Artifact to VM'
-            inputs:
-              SourceFolder: '$(artifact_path)'
-              Contents: '**/*'
-              TargetFolder: '/var/lib/tomcat9/webapps/'
-
-          - task: SSH@0
-            displayName: 'Restart Tomcat'
-            inputs:
-              host: $(vm_host)
-              username: $(vm_user)
-              password: $(vm_password)
-              port: 22
-              scriptType: 'bash'
-              scriptInline: |
-                sudo systemctl restart tomcat9
+  - script: |
+      echo Add other tasks to build, test, and deploy your project.
+      echo See https://aka.ms/yaml
+    displayName: 'Run a multi-line script'
